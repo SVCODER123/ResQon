@@ -3,10 +3,19 @@ const multer = require('multer');
 const path   = require('path');
 const SOS    = require('../models/SOS');
 const { protect } = require('../middleware/auth');
-const { cloudinary, isCloudinaryConfigured, missingVars } = require('../utils/cloudinary');
+
+// ── Multer Storage ────────────────────────────────────────────────────────────
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, path.join(__dirname, '..', process.env.UPLOAD_DIR || 'uploads')),
+  filename:    (req, file, cb) => {
+    const ext  = path.extname(file.originalname);
+    const name = `${req.user._id}_${Date.now()}${ext}`;
+    cb(null, name);
+  },
+});
 
 const upload = multer({
-  storage: multer.memoryStorage(),
+  storage,
   limits: { fileSize: (parseInt(process.env.MAX_FILE_SIZE_MB) || 20) * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = /jpeg|jpg|png|gif|mp4|mov|avi|webm|mp3|m4a|wav|ogg/;
@@ -16,39 +25,11 @@ const upload = multer({
   },
 });
 
-const uploadBufferToCloudinary = ({ buffer, originalname, mimetype, userId, sosId, type }) =>
-  new Promise((resolve, reject) => {
-    const extension = path.extname(originalname || '').replace('.', '');
-
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: process.env.CLOUDINARY_FOLDER || 'resqon/evidence',
-        resource_type: 'auto',
-        public_id: `${userId}_${sosId}_${Date.now()}`,
-        format: extension || undefined,
-        tags: ['resqon', 'evidence', type],
-        context: `sos_id=${sosId}|uploaded_by=${userId}|mime_type=${mimetype}`,
-      },
-      (error, result) => {
-        if (error) return reject(error);
-        return resolve(result);
-      },
-    );
-
-    stream.end(buffer);
-  });
-
 router.use(protect);
 
 // POST /api/evidence/:sosId
 router.post('/:sosId', upload.single('file'), async (req, res) => {
   try {
-    if (!isCloudinaryConfigured) {
-      return res.status(500).json({
-        message: `Cloudinary is not configured. Missing env vars: ${missingVars.join(', ')}`,
-      });
-    }
-
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
     const sos = await SOS.findById(req.params.sosId);
@@ -59,16 +40,7 @@ router.post('/:sosId', upload.single('file'), async (req, res) => {
                : mime.startsWith('video') ? 'video'
                : 'audio';
 
-    const uploaded = await uploadBufferToCloudinary({
-      buffer: req.file.buffer,
-      originalname: req.file.originalname,
-      mimetype: req.file.mimetype,
-      userId: req.user._id.toString(),
-      sosId: sos._id.toString(),
-      type,
-    });
-
-    const url = uploaded.secure_url;
+    const url = `/uploads/${req.file.filename}`;
     sos.evidence.push({ type, url, uploadedBy: req.user._id });
     await sos.save();
 
