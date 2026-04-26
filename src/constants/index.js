@@ -1,4 +1,5 @@
 // ─── App Constants ───────────────────────────────────────────────────────────
+import Constants from 'expo-constants';
 
 export const COLORS = {
   primary:     '#E53935',
@@ -21,11 +22,8 @@ export const COLORS = {
 // API CONFIG (FIXED)
 // ─────────────────────────────────────────────
 
-// 🔥 CHANGE THIS BASE ONLY
-const BASE_URL = 'http://192.168.1.108:5000';
-
-// API PREFIX  
-export const API_BASE = `${BASE_URL}/api`;
+const API_BASE_FROM_CONFIG = Constants.expoConfig?.extra?.apiBaseUrl;
+export const API_BASE = API_BASE_FROM_CONFIG || 'http://localhost:5000/api';
 
 // ─────────────────────────────────────────────
 // APP CONFIG

@@ -58,6 +58,7 @@
       "expo-sensors"
     ],
     "extra": {
+      "apiBaseUrl": "https://resqon-ypzk.onrender.com/api/",
       "eas": {
         "projectId": "32d06ea9-7f1e-418f-8f3c-ea395f4808ab"
       }
