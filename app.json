@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "ResQon",
+    "icon": "./assets/icon.png",
+    "slug": "resqon",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0D0D0D"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.resqon.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "ResQon needs location to send emergency alerts.",
+        "NSLocationAlwaysUsageDescription": "ResQon needs background location during active SOS.",
+        "NSCameraUsageDescription": "ResQon needs camera to upload evidence photos.",
+        "NSMicrophoneUsageDescription": "ResQon needs microphone to record audio evidence.",
+        "NSPhotoLibraryUsageDescription": "ResQon needs photo library to upload evidence."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0D0D0D"
+      },
+      "package": "com.resqon.app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "SEND_SMS",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "RECORD_AUDIO",
+        "READ_MEDIA_IMAGES",
+        "READ_MEDIA_VIDEO"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "ResQon needs location for emergency services."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "ResQon needs photos to upload evidence.",
+          "cameraPermission": "ResQon needs camera to capture evidence."
+        }
+      ],
+      "expo-sensors"
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+# =========================
+# 📦 Node.js / Backend
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+pnpm-lock.yaml
+
+# Logs
+logs/
+*.log
+
+# Build output
+dist/
+build/
+
+# =========================
+# 🔐 Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# 🗄 MongoDB / Local DB
+# =========================
+data/
+*.db
+*.sqlite
+
+# =========================
+# 📱 Expo / React Native
+# =========================
+.expo/
+.expo-shared/
+web-build/
+dist/
+
+# Metro bundler cache
+.metro-cache/
+
+# React Native build folders
+android/
+ios/
+
+# Expo cache
+.cache/
+
+# =========================
+# 🧪 Testing / Coverage
+# =========================
+coverage/
+
+# =========================
+# 🧑‍💻 IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# 💻 OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 📂 Temporary / Misc
+# =========================
+*.tmp
+*.temp
+*.bak
+
+# =========================
+# 🔊 Assets (IMPORTANT)
+# =========================
+# DO NOT ignore assets because your app uses siren.wav
+# assets/
+# Keep assets tracked
+
+# =========================
+# 🔑 Secrets / Keys
+# =========================
+*.pem
+*.key
+*.crt
